@@ -3,7 +3,11 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+  //once the user end point is hit, redirect to register page unless logged in
+  res.redirect('/userLogin');
 });
+
+
+
 
 module.exports = router;

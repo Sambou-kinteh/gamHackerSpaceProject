@@ -3,6 +3,7 @@ var express = require('express');
 var router = express.Router();
 // const mysql = require('mysql');
 const adminDatabase = require('../adminlogin.json');
+const userDatabase = require('../userlogin.json');
 // const app = require('app');
 const requestIp = require('request-ip');
 const ipFile = require('../ip.json');
@@ -65,11 +66,6 @@ router.get('/', function(req, res, next) {
   console.log('Getting main site');
 });
 
-//register endpoint is for new users and users generally
-router.get('/register', (req, res) => {
-  res.render('userlogin_signup', {title: 'Register'});
-});
-
 //contacts page get renderer
 router.get('/Contacts', (req, res) => {
   res.render('contacts', { title: 'Contacts' });
@@ -82,17 +78,6 @@ router.get('/aboutus', (req, res) => {
   res.send('Working on it :)');
 });
 
-//ambitions get renderer
-router.get('/departments', (req, res) => {
-  // TODO: WORKING
-  // res.render('goals', { title: 'Ambitions' });
-  res.send('Working on it :)');
-});
-
-// router.get('/dev_chats', (req, res) => {
-  //   res.render('dev_chats', { title: 'Dev Chat' });
-  // });
-  
 //admin login
 router.get('/adminLogin', (req, res) => {
   var RequestingPerson = loginTracker.find(f => f.userName == ADMINUSERLOGGEDIN[0]);
@@ -104,9 +89,73 @@ router.get('/adminLogin', (req, res) => {
   }
   
 });
+
+router.get('/userLogin', (req, res) => {
+  res.render('userlogin_signup', {title: 'Register'});
+});
   
 
 /*TODO: POST REQUESTS FOR API */
+
+router.post('/userLogin', (req, res) => {
+  var isUserFound = [];
+  const IF_LOGIN = req.body.username;
+  if (IF_LOGIN) {
+    //if user wants to login
+    const { userName, passWord } = req.body;
+    const requestingPerson = userDatabase.map(f => f.userName == userName);
+    var notLoggedIn = requestingPerson.notLoggedin;
+
+    if (notLoggedIn == 'false' && passWord == requestingPerson.passWord){
+      res.redirect('/users/departments');
+    }else if (userName == requestingPerson.userName && passWord == requestingPerson.passWord && notLoggedIn == 'true') {
+      //update the persons login status
+      //login the person
+      requestingPerson.notLoggedin = 'false';
+      fs.writeFile('./userlogin.json', JSON.stringify(userDatabase), err => console.log(err));
+      res.redirect('/users/departments');
+    }else{
+      console.log('Unknown Error');
+      res.end('Unknown Error');
+    }
+  //end of login 
+  }else{
+    //if user wants to signup
+    const { fullname, password, retyped, gender, email, phone} = req.body;
+    
+    console.log('Posting user signup data');
+    const userUsernames = userDatabase.map(f => f.userName);
+    const userEmail = userDatabase.map(f => f.email);
+    const userPhone = userDatabase.map(f => f.phone);
+
+    for (let index = 0; index < userUsernames.length; index++) {
+      const element = userUsernames[index];
+      const elementEmail = userEmail[index];
+      const elementPhone = userPhone[index];
+      if (userDatabase.length != 0 && elementEmail == email && elementPhone == phone || element == fullname){
+        isUserFound.push('true');
+        console.log('Sorry but username and phone number is taken');
+        break
+      }else{
+        isUserFound.pop();
+        isUserFound.push('false');
+      }
+      
+    }
+
+    //ALGORITHM LOGIC TWO
+    const ifUserExists = isUserFound[isUserFound.length -1] != 'false';
+    //TODO: Check all conditions then sign em up
+    if (password != retyped){}
+    else if(ifUserExists){}
+    else{
+      //add person to the database
+    }
+
+  //end of signup
+  }
+  // res.render('departments', {title: 'Welcome User'});
+});
 
 //admin login request post
 router.post('/adminLogin', (req, res) => {
@@ -303,20 +352,12 @@ router.post('/adminSignup', (req, res) => {
   //POST SIGNUP ENDS
 });
 
-//TODO:logout method
-
-
-router.post('/register', (req, res) => {
-  res.send('Working');
-  
-});
-
 /* REQUESTS */
-//TODO: END POINT FOR USER REGISTION PAGE
-//TODO: END POINT FOR CONTACT POST REQUEST
+//TODO: END POINT FOR USER REGISTION PAGE DONE
+//TODO: END POINT FOR CONTACT POST REQUEST DONE
 //TODO: also add put request
 //TODO: also add delete request
-//TODO: also add if person did sign out
+//TODO: also add if person did sign out DONE
 
 
 
