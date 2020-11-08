@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>Login / Signup</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel='stylesheet' href='/stylesheets/style.css' />
+<style>
+
+</style>
+<body class="w3-body w3-teal">
+
+<!-- Navbar -->
+<div class="w3-top">
+  <div class="w3-bar w3-teal w3-card w3-left-align w3-large">
+    <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-red" href="javascript:void(0);" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
+    <form method="GET" action="/"><button type="submit" class="btn-link w3-bar-item w3-button w3-padding-large w3-black">Home</button></form>
+  </div>
+</div>
+
+
+ 
+
+
+<!-- First Grid -->
+<div class="w3-mobile w3-row-padding w3-padding-64 w3-container">
+  <div class="w3-mobile w3-content w3-card-4">
+
+          <div class="w3-display-left w3-padding w3-col l6 m8 w3-margin-top" style="align-self: center;">
+            <div class="w3-card-4 w3-mobile w3-container w3-white w3-padding-16">
+                <div class="w3-row-padding" style="margin:0 -16px;">
+                <h4 class="" style="text-align: center; font-style: bold;">Admin Login</h4>
+
+                <form method="POST" action="/adminLogin">
+
+                  <div class="w3-half">
+                    <label><i class="fa fa-user-o"></i> Username</label>
+                    <input name="userName" class="w3-input w3-border" type="text" placeholder="username" required>
+                  </div>
+                  <div class="w3-half">
+                    <label><i class=""></i> Password</label>
+                    <input name="passWord" class="w3-input w3-border" type="password" placeholder="password" required>
+                  </div>
+                  <div class="w3-half">
+                    <button type="submit" class="w3-btn w3-button w3-red w3-round w3-margin">Login</button>
+                  </div>
+                  <div id="show-err-login" class="w3-half w3-margin-top w3-hide">
+                    <label id="loginErr" style="font-weight: normal; color: red;"><%= notFoundData %></label>
+                  </div>
+
+                </div>
+
+                </form>
+
+                <form method="POST" action="/adminSignup">
+
+                <div class="w3-row-padding w3-border" style="margin:8px -16px;">
+                  <h4 class="" style="text-align: center; font-style: bold;">Create an admin Account</h4>
+
+                  <div class="w3-half">
+                    <label><i class="fa fa-user-o"></i> Username</label>
+                    <input name="userName" class="w3-input w3-border" type="text" placeholder="username" required>
+                  </div>
+
+                  <div class="w3-half">
+                    <label><i class=""></i> Password</label>
+                  <input name="passWord" class="w3-input w3-border" type="password" placeholder="Enter password"  id = "firstPass" required>
+                  </div>
+
+                  <div class="w3-half w3-margin-top">
+                    <label><i class=""></i> Re-type Password</label>
+                  <input name="reTypePassword" class="w3-input w3-border" type="password" placeholder="Re-enter password" id = "secondPass" required>
+                  </div>
+
+                  <div class="w3-half w3-margin-top" style="margin-top: 0cm;">
+                    <label><i class="fa fa-child"></i> API Key</label>
+                    <input name="APIKEY_GIVEN" class="w3-input w3-border" type="password" placeholder="Enter System API key" required>
+                  </div>
+
+                  <div id="show-err" class="w3-half w3-margin-top w3-hide">
+                  <label name="reTypePassword" type="text" id="incPass" style="font-weight: normal;" readonly><%= error_data %></label>
+                  </div>
+
+                  
+                <button type="submit" class="w3-btn w3-button w3-teal w3-round w3-margin" onclick="passChecker()">Sign up</button> 
+                </form>
+                </div>
+                  
+                
+                  
+            </div>
+            
+           
+          </div>
+
+    </div>
+</div>
+       
+
+<script>
+// Used to toggle the menu on small screens when clicking on the menu button
+// function myFunction() {
+//   var x = document.getElementById("navDemo");
+//   if (x.className.indexOf("w3-show") == -1) {
+//     x.className += " w3-show";
+//   } else { 
+//     x.className = x.className.replace(" w3-show", "");
+//   }
+// }
+
+
+
+// function passChecker(){
+//   var passOne = document.getElementById('firstPass');
+//   var passtwo = document.getElementById('secondPass');
+//   if (passOne != passtwo) {
+//   console.log('Pass Matched')
+//   window.Response('/home')
+//   }else{
+//     console.log(passOne, passtwo)
+//     alert('Passwords don\'t match');
+//   }
+// }
+  var passNot = document.getElementById('show-err');
+  var error_data = "<%= error_data %>";
+
+  if (error_data != 'none') {
+
+    if (passNot.className.indexOf("w3-show") == -1) {
+      // x.className += " w3-show";
+      passNot.className = passNot.className.replace(" w3-hide", " w3-show");
+    } else { 
+      passNot.className = passNot.className.replace(" w3-show", " w3-hide");
+    }
+
+  }else{
+    console.log('OK');
+  }
+
+  var div_login_err = document.getElementById('show-err-login');
+  var error_data_login = "<%= notFoundData %>";
+  if (error_data_login != 'none') {
+
+    if (div_login_err.className.indexOf('w3-show') == -1) {
+      div_login_err.className = div_login_err.className.replace(" w3-hide", " w3-show");
+    }else{
+      div_login_err.className = div_login_err.className.replace(" w3-show", " w3-hide");
+    }
+
+  }else{
+    console.log("OK");
+  }
+</script>
+
+</body>
+</html>
+

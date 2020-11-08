@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<title><%= title %></title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel='stylesheet' href='/stylesheets/style.css' />
+<style>
+
+</style>
+<body>
+
+<!-- Navbar -->
+<div class="w3-top">
+  <div class="w3-bar w3-teal w3-card w3-left-align w3-large">
+    <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-teal" href="javascript:void(0);" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
+    <form method="GET" action="/">
+        <button type="submit" class="btn-link w3-bar-item w3-button w3-padding-large w3-black">Home</button>
+    </form>
+  </div>
+
+  <!-- Navbar on small screens -->
+  <div id="navDemo" class="w3-bar-block w3-white w3-hide w3-hide-large w3-hide-medium w3-large">
+  </div>
+</div>
+
+<!-- Header -->
+<header class="w3-container w3-teal w3-center" style="padding:128px 16px">
+  <h1 class="w3-margin w3-jumbo">
+    <span class="w3-hover-text-white">Sign </span>
+    <span class="w3-hover-text-black"> Up / Login</span>
+  </h1>
+</header>
+
+
+
+
+<header class="w3-mobile w3-container  w3-white">
+    <h1 class="w3-left">Create Account</h1>
+    <h1 id="content-desktop" class="w3-right">Login</h1>
+</header>
+  <!-- TODO: ADD LOGIN FORM FOR USER -->
+  <div class="w3-mobile w3-container w3-half w3-margin-top">
+  
+  <form method="POST" action="/register" class="w3-container w3-card-4">
+  
+  <p>
+  <input name="fullname" placeholder="Enter your Full Name" class="w3-animate-input w3-input" type="text" style="width:90%" required>
+  <label>Full Name*</label></p>
+  <p>
+  <input name="password" class="w3-input w3-animate-input" placeholder="Password" aria-placeholder="Choose a Strong Password" type="password" style="width:90%" required>
+  <label>Password*</label></p>
+
+  <p>
+  <input name="retyped" class="w3-input w3-animate-input" placeholder="Retype Password" aria-placeholder="Re-enter your Password" type="password" style="width:90%" required>
+  <label>Retype Password*</label></p>
+  
+  <p><label>Gender</label></p>
+  <p>
+  <input class="w3-radio" type="radio" name="gender" value="male" aria-required="true" required>
+  <label>Male</label></p>
+  
+  <p>
+  <input class="w3-radio" type="radio" name="gender" value="female" aria-required="true" required>
+  <label>Female</label></p>
+
+  <div class="w3-container w3-border">
+    <p style="text-decoration: underline;">Contact</p>
+  <p>
+    <input name="email" placeholder="Enter your Email" class="w3-animate-input w3-input" type="email" style="width:90%" required>
+    <label>Email*</label></p>
+
+  <p>
+    <input name="phone" placeholder="Enter your Phone" class="w3-animate-input w3-input" type="tel" style="width:90%">
+    <label>Phone Number</label></p>
+  </div>
+  
+  
+  <!-- <p>
+  <input id="milk" class="w3-check" type="checkbox" checked="checked">
+  <label>Stay logged in</label></p> -->
+  
+  <p>
+  <button type="submit" class="w3-btn w3-button w3-section w3-blue w3-ripple"> Sign up </button></p>
+  
+  </form>
+
+  </div>
+
+  <header id="content-mobile" class="w3-mobile w3-container  w3-white">
+    <h1 class="w3-mobile w3-margin-top">Login</h1>
+  </header>
+
+  <!-- Login Form -->
+  <div id="login" class="w3-mobile w3-container w3-half w3-margin-top">
+    <form method="POST" action="/register" class="w3-container w3-card-4">
+      
+      <p>
+        <label><i class="fa fa-user-o"></i> Username</label></p>
+        <input name="username" placeholder="Username -Your email" class="w3-animate-input w3-input" type="text" style="width:90%" required>
+
+      <p>
+        <label><i class="fa fa-key"></i> Password</label></p>
+        <input name="password" class="w3-input w3-animate-input" placeholder="Your Password" aria-placeholder="Choose a Strong Password" type="password" style="width:90%" required>
+
+      <p>
+        <button type="submit" class="get-started-button w3-btn w3-button w3-section w3-blue w3-ripple"> Login </button></p>
+    </form>
+  </div>
+
+
+
+  <!-- Footer -->
+<!-- <footer class="w3-container w3-padding-42 w3-center w3-opacity">   -->
+  <div class="w3-container ">
+    <div class="w3-xlarge w3-padding-32 w3-center">
+      <i class="fa fa-facebook-official w3-hover-opacity"></i>
+      <i class="fa fa-instagram w3-hover-opacity"></i>
+      <i class="fa fa-linkedin w3-hover-opacity"></i>
+    </div>
+  </div>
+   <p class="w3-center w3-opacity">Powered by <a href="#" target="_blank">Samski.py</a></p>
+  <!-- </footer> -->
+  
+  <script>
+  // Used to toggle the menu on small screens when clicking on the menu button
+  function myFunction() {
+    var x = document.getElementById("navDemo");
+    if (x.className.indexOf("w3-show") == -1) {
+      x.className += " w3-show";
+    } else { 
+      x.className = x.className.replace(" w3-show", "");
+    }
+  }
+
+  </script>
+  
+  </body>
+  </html>
+  
