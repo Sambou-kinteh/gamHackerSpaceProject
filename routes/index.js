@@ -7,11 +7,13 @@ const userDatabase = require('../userlogin.json');
 // const app = require('app');
 const requestIp = require('request-ip');
 const ipFile = require('../ip.json');
+const UserIpFile = require('../userIp.json');
 const http = require('http');
 const postman = require('postman-request');
 const loginTracker = require('./loginTracker.json');
 
 const APIKEY = 'gAmHaCk2020&fOrEvErKEY';
+//TODO: NOTE : THE IP.JSON FILE IS ONLY FOR ADMINS AND USERIP.JSON IS FOR USERS
 
 //contains user thats logged in
 const ADMINUSERLOGGEDIN = [];
@@ -128,28 +130,69 @@ router.post('/userLogin', (req, res) => {
     const userEmail = userDatabase.map(f => f.email);
     const userPhone = userDatabase.map(f => f.phone);
 
-    for (let index = 0; index < userUsernames.length; index++) {
-      const element = userUsernames[index];
-      const elementEmail = userEmail[index];
-      const elementPhone = userPhone[index];
-      if (userDatabase.length != 0 && elementEmail == email && elementPhone == phone || element == fullname){
-        isUserFound.push('true');
-        console.log('Sorry but username and phone number is taken');
-        break
-      }else{
-        isUserFound.pop();
-        isUserFound.push('false');
+    if (userDatabase.length != 0) {
+
+      for (let index = 0; index < userUsernames.length; index++) {
+        const element = userUsernames[index];
+        const elementEmail = userEmail[index];
+        const elementPhone = userPhone[index];
+        console.log(userDatabase.length);
+        if (elementEmail == email && elementPhone == phone || element == fullname){
+          isUserFound.push('true');
+          console.log('Sorry but username and phone number is taken');
+          break
+        }else{
+          isUserFound.pop();
+          isUserFound.push('false');
+        }
+        
       }
-      
-    }
+    //loop ends
+    }else{console.log('Good')}
 
     //ALGORITHM LOGIC TWO
-    const ifUserExists = isUserFound[isUserFound.length -1] != 'false';
+    const ifUserExists = isUserFound[isUserFound.length -1] != 'false' && userDatabase.length != 0;
+    // console.log(isUserFound);
     //TODO: Check all conditions then sign em up
-    if (password != retyped){}
-    else if(ifUserExists){}
+    if (password != retyped){
+      console.log('Incorrect password');
+    }
+    else if(ifUserExists){
+      console.log('User Exists');
+    }
     else{
+      const userIp = req.clientIp;
       //add person to the database
+      const userId = userDatabase.map(f => f.id);
+      
+      const newUser = {
+        id: (userId.length > 0 ? Math.max(...userId) : 0) + 1,
+        fullname,
+        password,
+        retyped,
+        gender,
+        email,
+        phone
+      }
+      const newIp = {
+        fullname,
+        userIp
+      }
+      const newLoginLog = {
+        fullname
+      }
+      //add the person to json file userlogin.json
+      const newUserConcat = userDatabase.concat(newUser);
+      fs.writeFile('./userlogin.json', JSON.stringify(newUserConcat), err => console.log(err));
+      //add the users ip address
+      const newUserIpConcat = UserIpFile.concat(newIp);
+      fs.writeFile('./userIp.json', JSON.stringify(newUserIpConcat), err => console.log(err));
+      //add the users login log to logintrackeruser.json
+      const newUserLogConcat = UserIpFile.concat(newLoginLog);
+      fs.writeFile('./routes/loginTrackerUser.json', JSON.stringify(newUserLogConcat), err => console.log(err));
+
+      //redirect to user departments
+      res.redirect('/users/departments');
     }
 
   //end of signup
@@ -257,32 +300,32 @@ router.post('/adminSignup', (req, res) => {
     //TODO: ALL TYPE CHECKS SHOULD GO TO LOGIN_SIGNUP.EJS || TRY TO USE (IF DATA IS TRUE) IN EJS
     //if API KEY IS INCORRECT
     if (APIKEY != APIKEY_GIVEN) {
-      res.render('login_signup', {error_data: 'Api Key invalid'});
+      res.render('login_signup', {error_data: 'Api Key invalid',  notFoundData: 'none'});
       console.log('API');
       res.end();
       
       //if PASSWORD IS INCORRECT
     }else if (passWord != reTypePassword) {
-      res.render('login_signup', {error_data: 'Passwords do not match'});
+      res.render('login_signup', {error_data: 'Passwords do not match',  notFoundData: 'none'});
       console.log('Pass');
       res.end();
       
       //if username already exists
     }else if (userExists) {
-      res.render('login_signup', {error_data: 'Username Already Exists'});
+      res.render('login_signup', {error_data: 'Username Already Exists',  notFoundData: 'none'});
       console.log('User');
       res.end();
 
       //if pass is not strong
     }else if ( !(passWord.match(PASSWORDPATTERN)) ) {
       console.log('inc');
-      res.render('login_signup', {error_data: 'Password doesn\'t match standards defined'});
+      res.render('login_signup', {error_data: 'Password doesn\'t match standards defined',  notFoundData: 'none'});
       res.end();
 
     //if username is not up to standard
     }else if ( !(userName.match(USERNAMEPATTERN)) ) {
       console.log('inc');
-      res.render('login_signup', {error_data: 'Username doesn\'t match standards defined'});
+      res.render('login_signup', {error_data: 'Username doesn\'t match standards defined' ,  notFoundData: 'none'});
       res.end();
 
     }else {

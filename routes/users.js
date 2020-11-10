@@ -7,7 +7,9 @@ router.get('/', function(req, res, next) {
   res.redirect('/userLogin');
 });
 
-
+router.get('/departments', (req, res) => {
+  res.render('departments', {title: 'Welcome User'});
+});
 
 
 module.exports = router;
