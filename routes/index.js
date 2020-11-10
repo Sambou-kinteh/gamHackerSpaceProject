@@ -11,12 +11,14 @@ const UserIpFile = require('../userIp.json');
 const http = require('http');
 const postman = require('postman-request');
 const loginTracker = require('./loginTracker.json');
+const userLoginTracker = require('./loginTrackerUser.json');
 
 const APIKEY = 'gAmHaCk2020&fOrEvErKEY';
 //TODO: NOTE : THE IP.JSON FILE IS ONLY FOR ADMINS AND USERIP.JSON IS FOR USERS
 
 //contains user thats logged in
 const ADMINUSERLOGGEDIN = [];
+const USERLOGGEDIN = [];
 
 //TODO: INTEGRATION WITH MYSQL LATER
 // var CONFIG = {
@@ -94,7 +96,15 @@ router.get('/adminLogin', (req, res) => {
 });
 
 router.get('/userLogin', (req, res) => {
-  res.render('userlogin_signup', {title: 'Register'});
+  //made this variable to keep track of one thats logged in.
+  var RequestingPerson = userLoginTracker.find(f => f.email == USERLOGGEDIN[0])
+  
+  if (RequestingPerson == undefined && userLoginTracker.length < 1){
+    res.render('userlogin_signup', {title: 'Register'});
+  }else{
+    //redirect to departments if user is loggedin
+    res.redirect('/users/departments');
+  }
 });
   
 
@@ -107,7 +117,13 @@ router.post('/userLogin', (req, res) => {
     //if user wants to login
     const { userName, passWord } = req.body;
     const requestingPerson = userDatabase.map(f => f.userName == userName);
-    var notLoggedIn = requestingPerson.notLoggedin;
+    
+    if (userDatabase.length < 1){
+      //if no user, take them to user login page
+      res.redirect('/userLogin');
+    }else{
+      var notLoggedIn = requestingPerson.notLoggedin;
+    }
 
     if (notLoggedIn == 'false' && passWord == requestingPerson.passWord){
       res.redirect('/users/departments');
@@ -117,6 +133,14 @@ router.post('/userLogin', (req, res) => {
       requestingPerson.notLoggedin = 'false';
       fs.writeFile('./userlogin.json', JSON.stringify(userDatabase), err => console.log(err));
       res.redirect('/users/departments');
+
+      const newUserLog = {
+        userName
+      }
+      const newUserLogConcat = userLoginTracker.concat(newUserLog);
+      fs.writeFile('./routes/loginTrackerUser', JSON.stringify(newUserLogConcat), err => console.log(err));
+      //also update the userlogin tracker variable, using persons email to track
+      USERLOGGEDIN[0] = userName;
     }else{
       console.log('Unknown Error');
       res.end('Unknown Error');
@@ -130,7 +154,8 @@ router.post('/userLogin', (req, res) => {
     const userUsernames = userDatabase.map(f => f.userName);
     const userEmail = userDatabase.map(f => f.email);
     const userPhone = userDatabase.map(f => f.phone);
-
+    
+    //ALGORITHM LOGIC TWO
     if (userDatabase.length != 0) {
 
       for (let index = 0; index < userUsernames.length; index++) {
@@ -149,9 +174,8 @@ router.post('/userLogin', (req, res) => {
         
       }
     //loop ends
-    }else{console.log('Good')}
+    }else{isUserFound[0] == 'false'}
 
-    //ALGORITHM LOGIC TWO
     const ifUserExists = isUserFound[isUserFound.length -1] != 'false' && userDatabase.length != 0;
     // console.log(isUserFound);
     //TODO: Check all conditions then sign em up
@@ -180,7 +204,7 @@ router.post('/userLogin', (req, res) => {
         userIp
       }
       const newLoginLog = {
-        fullname
+        email
       }
       //add the person to json file userlogin.json
       const newUserConcat = userDatabase.concat(newUser);
@@ -194,6 +218,9 @@ router.post('/userLogin', (req, res) => {
 
       //redirect to user departments
       res.redirect('/users/departments');
+
+      //update the userloggedin
+      USERLOGGEDIN[0] = email;
     }
 
   //end of signup
