@@ -7,6 +7,7 @@ router.get('/', function(req, res, next) {
   res.redirect('/userLogin');
 });
 
+//render the user the department.ejs
 router.get('/departments', (req, res) => {
   res.render('departments', {title: 'Welcome User'});
 });
