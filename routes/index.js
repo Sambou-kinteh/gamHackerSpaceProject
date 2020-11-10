@@ -45,15 +45,16 @@ const ADMINUSERLOGGEDIN = [];
 
 /*TODO: END POINT FOR THE API
 
-** '/'            DESCRIPTION: renders home page             =>           METHODS: GET,
-** '/register'    DESCRIPTION: register new users            =>           METHODS: POST AND GET,
-** '/Contacts'    DESCRIPTION: users to send feed to admin   =>           METHODS: POST AND GET,
-** '/aboutus'     DESCRIPTION: users see what we about       =>           METHODS: GET,
-** '/ambitions'   DESCRIPTION: users see our aim:to change to Departments METHODS: GET:POST(SHOULD),
-** 'admins/dev_chats'   DESCRIPTION: admins can chat about important stuff      METHODS: POST, GET,
-** '/adminLogin'  DESCRIPTION: admins to login               =>           METHODS: POST, GET,
-** '/adminSignup' DESCRIPTION: signs up admins               =>           METHODS: POST, GET
-
+** '/'            DESCRIPTION: renders home page             =>                     METHODS: GET,
+** '/register'    DESCRIPTION: register new users            =>                     METHODS: POST AND GET,
+** '/Contacts'    DESCRIPTION: users to send feed to admin   =>                     METHODS: POST AND GET,
+** '/aboutus'     DESCRIPTION: users see what we about       =>                     METHODS: GET,
+** '/admins/dev_chats'   DESCRIPTION: admins can chat about important stuff !       METHODS: POST, GET,
+** '/adminLogin'  DESCRIPTION: admins to login               =>                     METHODS: POST, GET,
+** '/adminSignup' DESCRIPTION: signs up admins               =>                     METHODS: POST, GET
+** '/users'   DESCRIPTION: redirect to login if not logged in else give departments METHODS: GET,POST(SHOULD),
+** '/users/departments'   DESCRIPTION: users see our aim:to change to Departments   METHODS: GET:POST(SHOULD),
+others soon
 */
 
 //quotes to display in index
@@ -164,7 +165,7 @@ router.post('/userLogin', (req, res) => {
       const userIp = req.clientIp;
       //add person to the database
       const userId = userDatabase.map(f => f.id);
-      
+
       const newUser = {
         id: (userId.length > 0 ? Math.max(...userId) : 0) + 1,
         fullname,

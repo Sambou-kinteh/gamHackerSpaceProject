@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<!-- this "title" query string will be sent when renderring this page in index.js -->
 <title><%= title %></title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -36,7 +37,7 @@
 <!-- Header -->
 <header class="w3-container w3-red w3-center" style="padding:128px 16px">
   <h1 class="w3-margin w3-jumbo">Departments</h1>
-  <p class="w3-xlarge">Welcome to <%= title %></p>
+  <p class="w3-xlarge"><%= title %></p>
   <button class="get-started-button w3-btn w3-button w3-black w3-padding-large w3-large w3-margin-top">Login / Signup</button>
 </header>
 
