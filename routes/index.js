@@ -5,11 +5,11 @@ var router = express.Router();
 const adminDatabase = require('../adminlogin.json');
 const userDatabase = require('../userlogin.json');
 // const app = require('app');
-const requestIp = require('request-ip');
+// const requestIp = require('request-ip');
 const ipFile = require('../ip.json');
 const UserIpFile = require('../userIp.json');
-const http = require('http');
-const postman = require('postman-request');
+// const http = require('http');
+// const postman = require('postman-request');
 const loginTracker = require('./loginTracker.json');
 const userLoginTracker = require('./loginTrackerUser.json');
 
@@ -109,7 +109,7 @@ router.get('/userLogin', (req, res) => {
   
 
 /*TODO: POST REQUESTS FOR API */
-
+//TODO: CREATE THE LOGOUT ENDPONT DEPARTMENTS/LOGOUT
 router.post('/userLogin', (req, res) => {
   var isUserFound = [];
   const IF_LOGIN = req.body.username;
